@@ -5,127 +5,121 @@ import InputError from './error.jsx';
 
 export default class Input extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {
-            value: this.props.value,
-            valid: false,
-            errorMessage: 'Input is invalid',
-            errorVisible: false,
+  constructor (props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      value: this.props.value,
+      valid: false,
+      errorMessage: 'Input is invalid',
+      errorVisible: false
 
-        }
-        let checkpass = '';
-
-    };
-
-    handleChange(event) {
-        let valid = false;
-
-        const { refs } = this;
-        const { name, type } = this.props;
-
-        if (type == 'email') {
-            valid = this.validateEmail(refs[name].value);
-        }
-        else if (type == 'name') {
-            valid = this.validateName(refs[name].value);
-        }
-        else if (!type || type == 'text' || type == 'password' && name == 'password') {
-            valid = true;
-            checkpass = refs[name].value;
-
-        }
-        else if (name == 'confirm' && type == 'password') {
-            valid = this.validateConfirmPassword(refs[name].value, checkpass);
-        }
-        this.validation(refs[name].value, valid);
     }
-    onBlur() {
-        this.refs[this.props.name].focus();
-        this.handleChange();
-        return;
+    let checkpass = ''
+  };
+
+  handleChange (event) {
+    let valid = false
+
+    const { refs } = this
+    const { name, type } = this.props
+
+    if (type == 'email') {
+      valid = this.validateEmail(refs[name].value);
     }
-    validation(value, valid) {
-        let that = this;
-
-        if (typeof valid === 'undefined') {
-            valid = true;
-        }
-
-        let message = '';
-        let errorVisible = false;
-        if (!value) {
-            message = 'Required';
-            valid = false;
-            errorVisible = true;
-
-        } else if (!valid) {
-            message = 'Please enter a valid value';
-            valid = false;
-            errorVisible = true;
-
-        }
-        this.setState({
-            errormess: message,
-            value,
-            valid,
-            errorVisible: errorVisible
-        }, function () {
-            if (this.props.handleChange) {
-                this.props.handleChange();
-            }
-        });
+    else if (type == 'name') {
+      valid = this.validateName(refs[name].value);
     }
-    validateEmail(value) {
-        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(value);
+    else if (!type || type == 'text' || type == 'password' && name == 'password') {
+      valid = true;
+      checkpass = refs[name].value;
+
+    }
+    else if (name == 'confirm' && type == 'password') {
+      valid = this.validateConfirmPassword(refs[name].value, checkpass);
+    }
+    this.validation(refs[name].value, valid);
+  }
+  validation (value, valid) {
+    // let that = this
+
+    if (typeof valid === 'undefined') {
+      valid = true
     }
 
-    validateName(value) {
-        let re = /^[a-zA-Z][a-zA-Z0-9. _]*$/;
-        return re.test(value);
+    let message = ''
+    let errorVisible = false
+    if (!value) {
+      message = 'Required'
+      valid = false
+      errorVisible = true
+
+    } else if (!valid) {
+      message = 'Please enter a valid value'
+      valid = false
+      errorVisible = true
+
     }
-    validateConfirmPassword(password, confirmPassword) {
-        if (password == confirmPassword) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    this.setState({
+      errormess: message,
+      value,
+      valid,
+      errorVisible: errorVisible
+    }, function () {
+      if (this.props.handleChange) {
+        this.props.handleChange()
+      }
+    });
+  }
+  validateEmail (value) {
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(value)
+  }
+
+  validateName (value) {
+    let re = /^[a-zA-Z][a-zA-Z0-9. _]*$/
+    return re.test(value)
+  }
+  validateConfirmPassword (password, confirmPassword) {
+    if (password === confirmPassword) {
+      return true
     }
-    render() {
-        const { props, state } = this;
-        const { name, text } = props;
-        let { type } = props;
-        const { value, errorVisible, errormess } = state;
-
-        const isAllowedTypes = ['text', 'email', 'password', 'name'];
-
-        const isValidType = (isAllowedTypes.indexOf(type) > -1);
-        type = isValidType ? type : 'text';
-        return (<div>
-            <input
-                type={type}
-                name={name}
-                ref={name}
-                id={name}
-                className={"form-control input "}
-                placeholder={text}
-                onChange={this.handleChange}
-                onBlur={this.handleChange}
-                defaultValue={value}
-            />
-            <InputError
-                visible={errorVisible}
-                errorMessage={errormess}
-            />
-
-        </div>
-
-        );
+    else {
+      return false
     }
+  }
+  render () {
+    const { props, state } = this
+    const { name, text } = props
+    let { type } = props
+    const { value, errorVisible, errormess } = state
+
+    const isAllowedTypes = ['text', 'email', 'password', 'name']
+
+    const isValidType = (isAllowedTypes.indexOf(type) > -1)
+    type = isValidType ? type : 'text'
+    return (<div>
+      <input
+        type={type}
+        name={name}
+        ref={name}
+        id={name}
+        className={'form-control input'}
+        placeholder={text}
+        onChange={this.handleChange}
+        onBlur={this.handleChange}
+        defaultValue={value}
+      />
+      <InputError
+        visible={errorVisible}
+        errorMessage={errormess}
+      />
+
+    </div>
+
+    )
+  }
 }
 Input.propTypes = {
-    name: PropTypes.string.isRequired
-};
+  name: PropTypes.string.isRequired
+}

@@ -1,52 +1,49 @@
-import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Tasks } from '../api/tasks.js';
-import ReactDOM from 'react-dom';
-
-import Task from './Task.js';
-
+import React,{ Component } from 'react'
+import { withTracker } from 'meteor/react-meteor-data'
+import { Tasks } from '../api/tasks.js'
+import ReactDOM from 'react-dom'
+import { Meteor } from 'meteor/meteor'
+import Task from './Task.js'
 
 class Dashboard extends Component {
-
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
-      hideCompleted: false,
-    };
+      hideCompleted: false
+    }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit (event) {
+    event.preventDefault()
 
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim()
 
     Tasks.insert({
       text,
-      createdAt: new Date(),
-    });
+      createdAt: new Date()
+    })
 
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
+    ReactDOM.findDOMNode(this.refs.textInput).value = ''
   }
 
-  toggleHideCompleted() {
+  toggleHideCompleted () {
     this.setState({
-      hideCompleted: !this.state.hideCompleted,
-    });
+      hideCompleted: !this.state.hideCompleted
+    })
   }
 
-
-  renderTasks() {
-    let filteredTasks = this.props.tasks;
+  renderTasks () {
+    let filteredTasks = this.props.tasks
     if (this.state.hideCompleted) {
-      filteredTasks = filteredTasks.filter(task => !task.checked);
+      filteredTasks = filteredTasks.filter(task => !task.checked)
     }
     return filteredTasks.map((task) => (
       <Task key={task._id} task={task} />
-    ));
+    ))
   }
 
-  render() {
+  render () {
     return (
       <div className="container">
         <header>
@@ -65,18 +62,15 @@ class Dashboard extends Component {
           {this.renderTasks()}
         </ul>
       </div>
-    );
+    )
   }
 }
-
-
 export default withTracker(() => {
-
-  Meteor.subscribe('tasks');
+  Meteor.subscribe('tasks')
 
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    incompleteCount: Tasks.find({ checked: { $ne: true } }).count()
 
-  };
-})(Dashboard);
+  }
+})(Dashboard)

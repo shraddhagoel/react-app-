@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Meteor } from 'meteor/meteor';
-import { Tasks } from '../api/tasks.js';
+import React,{ Component } from 'react'
+// import classnames from 'classnames'
+// import { Meteor } from 'meteor/meteor'
+import { Tasks } from '../api/tasks.js'
 
 export default class Task extends Component {
-  toggleChecked() {
+  toggleChecked () {
     Tasks.update(this.props.task._id, {
-      $set: { checked: !this.props.task.checked },
-    });
+      $set: { checked: !this.props.task.checked }
+    })
   }
 
-  deleteThisTask() {
-    Tasks.remove(this.props.task._id);
+  deleteThisTask () {
+    Tasks.remove(this.props.task._id)
   }
 
-  render() {
-
-    const taskClassName = this.props.task.checked ? 'checked' : '';
+  render () {
+    const taskClassName = this.props.task.checked ? 'checked' : ''
 
     return (
       <li className={taskClassName}>
@@ -33,6 +32,6 @@ export default class Task extends Component {
 
         <span className="text">{this.props.task.text}</span>
       </li>
-    );
+    )
   }
 }
