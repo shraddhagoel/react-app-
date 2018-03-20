@@ -12,7 +12,7 @@ if (Meteor.isServer) {
     return User.find()
   })
 
-  Meteor.methods({
+  Meteor.methods ({
     'insert' (email, password) {
       console.log('register')
       var myFuture = new Future()
@@ -33,18 +33,15 @@ if (Meteor.isServer) {
         })
       return myFuture.wait()
     },
-  
     'login' (email, password) {
       var myFuture = new Future()      
       console.log('@@@@@@@@@@@@')
-  
       var x = User.findOne({
         email: email
       })
       var hash = x.password
       var setflag = 0
       console.log(hash)
-  
       bcrypt.compare(password, hash).then(function (res) {
         // res == true
         setflag = 1
@@ -53,8 +50,6 @@ if (Meteor.isServer) {
       })
       return myFuture.wait()
     }
-  
+
   })
 }
-
-

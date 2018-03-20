@@ -1,4 +1,4 @@
-import React,{ Component } from 'react'
+import React, { Component } from 'react'
 import Textarea from './Input.jsx'
 // import { withTracker } from 'meteor/react-meteor-data'
 // import ReactDOM from 'react-dom'
@@ -20,22 +20,19 @@ class Registration extends Component {
     const password = this.password.state.value
     console.log(email, password)
 
-    Meteor.call('insert', email, password,(err, res)=> {
+    Meteor.call ('insert', email, password, (err, res) => {
       // console.log("--------------",err)
-      if(err)
-      {
+      if (err) {
         console.log("Error @@@@@", err)
 
         this.setState({
           message: err.message
-        })    
-      }
-      else 
-      { 
+        })
+      } else {
         console.log("Response @@@@@", res)
         this.setState({
           message: "Successfully Registered"
-        })    
+        })
       }
     })
   }

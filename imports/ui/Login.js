@@ -15,13 +15,12 @@ class Login extends Component {
     const password = this.password.state.value
     th = this
     console.log(email, password)
-    Meteor.call('login', email, password, (err, res) => {
+    Meteor.call ('login', email, password, (err, res) => {
       if (res == null) { console.log('Invalid Details', res) } else {
         console.log('Logged In')
         this.props.history.push('/dashboard')
       }
-      if (err)
-      {
+      if (err) {
         console.log(err)
       }
     })
